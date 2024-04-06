@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MQTT Client</title>
+</head>
+<body>
+  <!-- Divs predefinidos -->
+  <div id="temperaturaDiv">Temperatura: </div>
+  <div id="humedadDiv">Humedad: </div>
+  <div id="proximidadDiv">Proximidad: </div>
+  <div id="iluminacionDiv">Iluminacion: </div>
+  <div id="calidadAireDiv">Calidad del Aire: </div>
+  <div id="actuadorDiv">Actuador: </div>
+
+  <script>
+    async function fetchTopicValues() {
+      const response = await fetch('http://localhost:3000/topicValues');
+      const topicValues = await response.json();
+
+      // Actualizar los valores de los divs existentes con los valores de los temas
+      document.getElementById('temperaturaH3').textContent = `Temperatura: ${topicValues['Temperatura']}`;
+      document.getElementById('humedad').textContent = `Humedad: ${topicValues['Humedad']}`;
+      document.getElementById('proximidad').textContent = `Proximidad: ${topicValues['Proximidad']}`;
+      document.getElementById('iluminacion').textContent = `Iluminacion: ${topicValues['Iluminacion']}`;
+      document.getElementById('calidadAire').textContent = `Calidad del Aire: ${topicValues['CalidadDelAire']}`;
+      document.getElementById('actuador').textContent = `Actuador: ${topicValues['Actuador']}`;
+    }
+
+    // Consultar los valores cada segundo
+    setInterval(fetchTopicValues, 1000);
+  </script>
+</body>
+</html>
