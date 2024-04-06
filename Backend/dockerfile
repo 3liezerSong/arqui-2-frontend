@@ -1,0 +1,17 @@
+# Usa la imagen base de Node.js versión 14
+FROM node:14
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /usr/src/app
+
+# Copia los archivos de tu aplicación al contenedor
+COPY src/MqttClient.js .
+
+# Instala las dependencias de la aplicación
+RUN npm install
+
+# Expone el puerto 3000 para acceder a la aplicación (si es necesario)
+# EXPOSE 3000
+
+# Define el comando de inicio para ejecutar la aplicación
+CMD ["node", "MqttClient.js"]
