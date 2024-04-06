@@ -8,10 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala las dependencias del backend
-RUN npm ci
+RUN npm install
 
 # Copia el resto de los archivos del backend
-COPY backend ./
+COPY . ./
 
 # Expón el puerto en el que tu aplicación escucha
 EXPOSE 3000
