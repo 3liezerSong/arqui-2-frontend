@@ -5,7 +5,7 @@ FROM node:16.13.2
 WORKDIR /app
 
 # Copia los archivos de configuración del backend (package-lock.json y package.json)
-COPY backend/package*.json ./
+COPY package*.json ./
 
 # Instala las dependencias del backend
 RUN npm ci
