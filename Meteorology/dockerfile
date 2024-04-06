@@ -12,8 +12,8 @@ RUN npm install
 
 COPY Meteorology .
 
-# Expone el puerto 3000 para acceder a la aplicación (si es necesario)
-EXPOSE 3000
+# Expone el puerto 5173 para acceder a la aplicación (si es necesario)
+EXPOSE 5173
 
 # Define el comando de inicio para ejecutar la aplicación
 CMD ["npm", "run", "dev"]
