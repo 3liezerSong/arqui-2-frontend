@@ -15,7 +15,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://3.238.52.126:3000/topicValues');
+        const response = await fetch('http://3.228.217.70:3000/topicValues');
         if (!response.ok) {
           throw new Error('Failed to fetch sensor values');
         }
