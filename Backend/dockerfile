@@ -2,7 +2,7 @@
 FROM node:16.13.2
 
 # Establece el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /app/Backend
 
 # Copia los archivos de configuración del backend (package-lock.json y package.json)
 COPY package*.json ./
@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copia el resto de los archivos del backend
-COPY . ./
+COPY . .
 
 # Expón el puerto en el que tu aplicación escucha
 EXPOSE 3000
