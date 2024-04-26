@@ -135,6 +135,14 @@ body {
   background-color: #0e276e;
 }
 
+.closed {
+  background-color: #ffcccc; /* Color de fondo rojo claro para puerta cerrada */
+}
+
+.open {
+  background-color: #ccffcc; /* Color de fondo verde claro para puerta abierta */
+}
+
 
 .card-inner {
   display: flex;
@@ -244,3 +252,32 @@ body {
 }
 
 
+/* Agrega los estilos de la tabla */
+
+.table-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 20px 20px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.data-table th {
+  background-color: #263043;
+  color: white;
+}
+
+.data-table tr:hover {
+  background-color: gray;
+}

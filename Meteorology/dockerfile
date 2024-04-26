@@ -1,4 +1,4 @@
-# Usa la imagen base de Node.js versión 14
+# Usa una imagen base de Node.js
 FROM node:16.13.2
 
 # Establece el directorio de trabajo dentro del contenedor

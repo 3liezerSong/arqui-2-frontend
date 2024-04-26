@@ -2,32 +2,25 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const http = require('http');
-//const socketIo = require('socket.io');
 const mqtt = require('mqtt');
 const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
-//const io = socketIo(server);
-
-// Configuración de CORS
 app.use(cors());
 
 // Configuración de la conexión a la base de datos
-const con = mysql.createConnection({
-  host: '34.173.229.176', 
-  user: 'root', 
-  password: '9$C@lg*`npK[*3/b'
-});
+//const connectionMySQL = mysql.createConnection({
+//  host: '34.173.229.176', user: 'root', password: "9$C@lg*`npK[*3/b"
+//});
+//
+//connectionMySQL.connect((err) => {
+//  if (err) { console.error('Error al conectar a la base de datos:', err);
+//    return;
+//  }else {console.log('Conexión exitosa a la base de datos MySQL.');}
+//});
 
-// Conexión a la base de datos
-con.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err);
-    return;
-  }
-  console.log('Conexión exitosa a la base de datos MySQL');
-});
+//connectionMySQL.end();
 
 const options = {
   host: 'sff234f1.ala.us-east-1.emqxsl.com',
@@ -38,7 +31,7 @@ const options = {
 };
 
 const client = mqtt.connect(options);
-const topics = ['Temperatura', 'Humedad', 'Proximidad', 'Iluminacion', 'CalidadDelAire', 'Actuador'];
+const topics = ['sensores/temperatura', 'sensores/humedad', 'sensores/proximidad', 'sensores/luz', 'sensores/aire','notificacion/aire','notificacion/luz'];
 
 //---------------LOGS-------------
 client.on('connect', () => {
@@ -67,25 +60,18 @@ client.on('message', (receivedTopic, message) => {
 
 app.get('/topicValues', (req, res) => {
   res.json(topicValues);
-  console.log(topicValues);
+  //console.log(topicValues);
 });
 
+const PORT = 3000;
+const serverUrl = `http://localhost:${PORT}`;
 
-const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Servidor HTTP y WebSocket iniciado en el puerto ${PORT}`);
+  console.log(`Servidor HTTP iniciado en ${serverUrl}`); 
+  const { exec } = require('child_process');
+  exec(`open ${serverUrl}`);
 });
 
-
-
-/*
-// Enviar mensaje MQTT desde el frontend
-socket.emit('send_mqtt_message', {
-  topic: 'mi/tema/mqtt',
-  payload: 'Mensaje MQTT desde el frontend'
-});
-
-*/
 
 //const humedad = 60; // Ejemplo de valor de humedad (deberías obtener este valor de algún sensor o fuente de datos)
 //client.publish('Humedad', humedad.toString(), (err) => {
@@ -97,7 +83,6 @@ socket.emit('send_mqtt_message', {
 //});
 
 
-
 // Manejar mensajes desde el frontend hacia MQTT
 //io.on('connection', (socket) => {
 //  console.log('Nuevo cliente WebSocket conectado');
@@ -107,7 +92,3 @@ socket.emit('send_mqtt_message', {
 //    client.publish(topic, payload);
 //  });
 //});
-
-// Servir el frontend estático
-//app.use(express.static('public'));
-// Servir el frontend estático

@@ -13,7 +13,12 @@ function Sidebar({openSidebarToggle}) {
         <ul className='sidebar-list'>
             <li className='sidebar-list-item'>
                 <a href="">
-                    <BsMenuButtonWideFill className='icon'/> Reports
+                    <BsMenuButtonWideFill className='icon'/> Reportes
+                </a>
+            </li>
+            <li className='sidebar-list-item'>
+                <a href="">
+                    <BsMenuButtonWideFill className='icon'/> Historial
                 </a>
             </li>
         </ul>
