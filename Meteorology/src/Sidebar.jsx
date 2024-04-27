@@ -16,11 +16,6 @@ function Sidebar({openSidebarToggle}) {
                     <BsMenuButtonWideFill className='icon'/> Reportes
                 </a>
             </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    <BsMenuButtonWideFill className='icon'/> Historial
-                </a>
-            </li>
         </ul>
     </aside>
   )

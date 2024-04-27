@@ -135,6 +135,14 @@ body {
   background-color: #0e276e;
 }
 
+.card:nth-child(7) {
+  background-color: #2cb920;
+}
+
+.card:nth-child(8) {
+  background-color: #c41a44;
+}
+
 .closed {
   background-color: #ffcccc; /* Color de fondo rojo claro para puerta cerrada */
 }

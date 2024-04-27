@@ -6,7 +6,7 @@ function Home() {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleCardClick = () => { setPopupVisible(true); };
   const handleClosePopup = () => { setPopupVisible(false);  };
-  const [sensorValues, setSensorValues] = useState([]);
+  const [sensorValue, setsensorValue] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +16,7 @@ function Home() {
           throw new Error('Failed to fetch sensor values');
         }
         const topicValues = await response.json();
-        setSensorValues(topicValues);
+        setsensorValue(topicValues);
       } catch (error) {
         console.error(error);
       }
@@ -40,44 +40,68 @@ function Home() {
                 <div className='card-inner'>
                     <h3 id="temperaturaH3">Temperatura</h3>                   
                 </div>
-                <h1>{sensorValues['sensores/temperatura']}</h1>
+                <h1>{sensorValue['sensores/temperatura']}</h1>
             </div>
             
             <div className='card'>
                 <div className='card-inner'>
                     <h3 id="humedadH3">Humedad</h3>
                 </div>
-                <h1>{sensorValues['sensores/humedad']}</h1>
+                <h1>{sensorValue['sensores/humedad']}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
                     <h3 id="proximidadH3">Proximidad</h3>
                 </div>
-                <h1>{sensorValues['sensores/proximidad']}</h1>
+                <h1>{sensorValue['sensores/proximidad']}</h1>
             </div>
             
             <div className='card'>
                 <div className='card-inner'>
                     <h3 id="iluminacionH3">Iluminación</h3>
                 </div>
-                <h1>{sensorValues['sensores/luz']}</h1>
+                <h1>{sensorValue['sensores/luz']}</h1>
             </div>
 
             <div className='card'>
                 <div className='card-inner'>
                     <h3 id="calidadDelAireH3">Calidad del Aire</h3>
                 </div>
-                <h1>{sensorValues['sensores/aire']}</h1>
+                <h1>{sensorValue['sensores/aire']}</h1>
+            </div>
+        
+        </div> 
+
+        <div className='main-title'>
+            <h3>Actuadores / Iluminación</h3>
+        </div>
+
+        <div className='main-cards'>
+            <div className='card'>
+                <div className='card-inner'>
+                    <h3 id="ventiladorH3">Ventiladores</h3>               
+                </div>
+                <h1>{sensorValue['notificacion/aire']}</h1>
             </div>
 
             <div className='card'>
                 <div className='card-inner'>
-                    <h3 id="actuadorH3">Actuador</h3>               
+                    <h3 id="actuadorH3">Puerta</h3>               
                 </div>
-                <h1>{sensorValues['notificacion/aire']}</h1>
+                <h1>{sensorValue['notificacion/aire']}</h1>
             </div>
 
-        </div>     
+            <div className='card'>
+                <div className='card-inner'>
+                    <h3 id="actuadorH3">Foco</h3>               
+                </div>
+                <h1>{sensorValue['notificacion/aire']}</h1>
+            </div>
+
+            
+        </div>   
+
+      
         
         {isPopupVisible && (
         <div className="popup-window">
@@ -89,32 +113,6 @@ function Home() {
         </div>
       )}
 
-       {/* </div>
-        <div className='table-container'>
-        <table className='data-table'>
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Temperatura</th>
-              <th>Humedad</th>
-              <th>Proximidad</th>
-              <th>Calidad del Aire</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((entry, index) => (
-              <tr key={index}>
-                <td>{entry.name}</td>
-                <td>{entry.temperatura}</td>
-                <td>{entry.humedad}</td>
-                <td>{entry.proximidad}</td>
-                <td>{entry.calidad_aire}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>*/}
-     
     </main>
   )
 }

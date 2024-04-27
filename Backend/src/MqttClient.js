@@ -1,26 +1,12 @@
-require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql');
 const http = require('http');
+const mysql = require('mysql');
 const mqtt = require('mqtt');
 const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
 app.use(cors());
-
-// Configuración de la conexión a la base de datos
-//const connectionMySQL = mysql.createConnection({
-//  host: '34.173.229.176', user: 'root', password: "9$C@lg*`npK[*3/b"
-//});
-//
-//connectionMySQL.connect((err) => {
-//  if (err) { console.error('Error al conectar a la base de datos:', err);
-//    return;
-//  }else {console.log('Conexión exitosa a la base de datos MySQL.');}
-//});
-
-//connectionMySQL.end();
 
 const options = {
   host: 'sff234f1.ala.us-east-1.emqxsl.com',
@@ -32,8 +18,11 @@ const options = {
 
 const client = mqtt.connect(options);
 const topics = ['sensores/temperatura', 'sensores/humedad', 'sensores/proximidad', 'sensores/luz', 'sensores/aire','notificacion/aire','notificacion/luz'];
+const topicValues = {'sensores/temperatura': "10", 'sensores/humedad': "20",
+'sensores/proximidad' : "30", 'sensores/luz' : "40", 'sensores/aire': "50",
+'notificacion/luz': "60"
+};
 
-//---------------LOGS-------------
 client.on('connect', () => {
   console.log('Conexión exitosa al broker MQTT.');
   topics.forEach((topic) => {
@@ -44,51 +33,65 @@ client.on('connect', () => {
   });
 });
 
+client.on('error', (error) => { console.error('Error: error en la conexión a MQTT:', error); });
 
-client.on('error', (error) => {
-  console.error('Error: error en la conexión a MQTT:', error);
-});
 
-const topicValues = {};
-
-client.on('message', (receivedTopic, message) => {
-  if (topics.includes(receivedTopic)) {
-    topicValues[receivedTopic] = message.toString();
-    console.log('Mensaje recibido en el topic', receivedTopic, ':', message.toString());
-  }
+app.post('/publish', (req, res) => {
+  const { topic, message } = req.body; 
+  client.publish(topic, message, (err) => {
+    if (err) {
+      console.error(`Error al publicar mensaje en ${topic}:`, err);
+      res.status(500).send(`Error al publicar mensaje en ${topic}`);
+    } else {
+      console.log(`Mensaje publicado correctamente en ${topic}:`, message);
+      res.send(`Mensaje publicado correctamente en ${topic}: ${message}`);
+    }
+  });
 });
 
 app.get('/topicValues', (req, res) => {
   res.json(topicValues);
-  //console.log(topicValues);
 });
 
 const PORT = 3000;
-const serverUrl = `http://localhost:${PORT}`;
-
 server.listen(PORT, () => {
-  console.log(`Servidor HTTP iniciado en ${serverUrl}`); 
+  console.log(`Servidor HTTP iniciado en http://localhost:${PORT}`); 
   const { exec } = require('child_process');
-  exec(`open ${serverUrl}`);
+  exec(`open http://localhost:${PORT}`);
 });
 
+// Configuración de la conexión a la base de datos
+const con = mysql.createConnection({
+  host: '34.173.229.176', user: 'root', password: "9$C@lg*`npK[*3/b", database: "Arqui2"
+});
 
-//const humedad = 60; // Ejemplo de valor de humedad (deberías obtener este valor de algún sensor o fuente de datos)
-//client.publish('Humedad', humedad.toString(), (err) => {
-//  if (err) {
-//    console.error('Error al publicar mensaje de humedad:', err);
-//  } else {
-//    console.log('Mensaje de humedad publicado correctamente:', humedad);
-//  }
-//});
+con.connect((err) => {
+  if (err) { console.error('Error al conectar a la base de datos:', err);
+    return;
+  }else {console.log('Conexión exitosa a la base de datos MySQL.');}
+});
+
+// Definir la función para insertar valores en la base de datos
+function insertValues() {
+  const temperatura = topicValues['sensores/temperatura'];
+  const humedad = topicValues['sensores/humedad'];
+  const proximidad = topicValues['sensores/proximidad'];
+  const luz = topicValues['sensores/luz'];
+  const aire = topicValues['sensores/aire'];
+
+  const sql = "INSERT INTO datos (humedad, temperatura, aire, luz, proximidad) VALUES (?, ?, ?, ?, ?)";
+  con.query(sql, [humedad, temperatura, aire, luz, proximidad], function (err, result) {
+    if (err) {
+      console.error('Error al insertar registro:', err);
+      return;
+    }
+  });
+}
+
+const interval = setInterval(insertValues, 1000);
+//con.end();
 
 
-// Manejar mensajes desde el frontend hacia MQTT
-//io.on('connection', (socket) => {
-//  console.log('Nuevo cliente WebSocket conectado');
-//  socket.on('send_mqtt_message', (data) => {
-//    const { topic, payload } = data;
-//    console.log(`Enviando mensaje al topic ${topic}: ${payload}`);
-//    client.publish(topic, payload);
-//  });
-//});
+
+
+
