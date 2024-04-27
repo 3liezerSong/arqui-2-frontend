@@ -150,21 +150,21 @@ function Home() {
           <div className='card-inner'>
             <h3>Ventiladores</h3>               
           </div>
-          <h1>{sensorValue['notificacion/aire']}</h1>
+          <h1></h1>
         </div>
 
         <div className={puertaClicked ? 'card clicked' : 'card'} onClick={handlePuertaClick}>
           <div className='card-inner'>
             <h3>Puerta</h3>               
           </div>
-          <h1>{sensorValue['notificacion/aire']}</h1>
+          <h1></h1>
         </div>
 
         <div className={focoClicked ? 'card clicked' : 'card'} onClick={handleFocoClick}>
           <div className='card-inner'>
             <h3>Foco</h3>               
           </div>
-          <h1>{sensorValue['notificacion/Foco']}</h1>
+          <h1></h1>
         </div> 
       </div> 
 
