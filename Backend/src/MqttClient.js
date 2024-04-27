@@ -118,7 +118,7 @@ app.get('/datos', (req, res) => {
 });
 
 
-const interval = setInterval(insertValues, 1000);
+const interval = setInterval(insertValues, 3000);
 //con.end();
 
 
