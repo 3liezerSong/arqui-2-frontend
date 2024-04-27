@@ -289,3 +289,33 @@ body {
 .data-table tr:hover {
   background-color: gray;
 }
+
+
+.alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.card.clicked {
+  background-color: #91e660; /* Cambia esto al color que desees cuando se haga clic */
+}
+
+.card:hover {
+  background-color: rgba(40, 47, 138, 0.2); /* Cambia el color de fondo cuando el mouse está sobre la tarjeta */
+  cursor: pointer; /* Cambia el cursor a una mano cuando pasa sobre la tarjeta */
+  transform: scale(1.05); /* Escala la tarjeta al 105% de su tamaño original */
+}
+
+.card {
+  /* Estilos de tu tarjeta */
+  transition: transform 0.3s ease; /* Agrega una transición suave al cambio de tamaño */
+}
+

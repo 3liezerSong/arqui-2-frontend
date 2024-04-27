@@ -6,7 +6,9 @@ const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
+
 app.use(cors());
+app.use(express.json());
 
 const options = {
   host: 'sff234f1.ala.us-east-1.emqxsl.com',
@@ -17,11 +19,8 @@ const options = {
 };
 
 const client = mqtt.connect(options);
-const topics = ['sensores/temperatura', 'sensores/humedad', 'sensores/proximidad', 'sensores/luz', 'sensores/aire','notificacion/aire','notificacion/luz'];
-const topicValues = {'sensores/temperatura': "10", 'sensores/humedad': "20",
-'sensores/proximidad' : "30", 'sensores/luz' : "40", 'sensores/aire': "50",
-'notificacion/luz': "60"
-};
+const topics = ['sensores/temperatura', 'sensores/humedad', 'sensores/proximidad', 'sensores/luz', 'sensores/aire','notificacion/aire','notificaciones'];
+const topicValues = {};
 
 client.on('connect', () => {
   console.log('Conexión exitosa al broker MQTT.');
@@ -49,8 +48,24 @@ app.post('/publish', (req, res) => {
   });
 });
 
+client.on('message', (receivedTopic, message) => {
+  if (topics.includes(receivedTopic)) {
+    topicValues[receivedTopic] = message.toString();
+    console.log('Mensaje recibido en el topic', receivedTopic, ':', message.toString());
+  }
+});
+
 app.get('/topicValues', (req, res) => {
   res.json(topicValues);
+});
+
+app.get('/clearNotificaciones', (req, res) => {
+  if (topicValues.hasOwnProperty('notificaciones')) {
+    delete topicValues['notificaciones'];
+    res.send('La clave "notificaciones" ha sido eliminada.');
+  } else {
+    res.send('La clave "notificaciones" no existe en el diccionario.');
+  }
 });
 
 const PORT = 3000;
@@ -87,6 +102,21 @@ function insertValues() {
     }
   });
 }
+
+// Endpoint GET para obtener los valores de la base de datos
+app.get('/datos', (req, res) => {
+  const sql = "SELECT tiempo, temperatura, humedad, proximidad, aire, luz FROM datos ORDER BY id DESC LIMIT 10";
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.error('Error al ejecutar consulta SELECT:', err);
+      res.status(500).json({ error: 'Error al obtener los datos' });
+    } else {
+      // Si la consulta se realiza correctamente, enviar los resultados al cliente
+      res.json(result);
+    }
+  });
+});
+
 
 const interval = setInterval(insertValues, 1000);
 //con.end();
