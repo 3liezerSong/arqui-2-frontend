@@ -60,8 +60,8 @@ app.get('/topicValues', (req, res) => {
 });
 
 app.get('/clearNotificaciones', (req, res) => {
-  if (topicValues.hasOwnProperty('notificaciones')) {
-    delete topicValues['notificaciones'];
+  if (topicValues.hasOwnProperty('notificacion/aire')) {
+    delete topicValues['notificacion/aire'];
     res.send('La clave "notificaciones" ha sido eliminada.');
   } else {
     res.send('La clave "notificaciones" no existe en el diccionario.');

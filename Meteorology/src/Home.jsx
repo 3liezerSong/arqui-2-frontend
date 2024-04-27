@@ -44,9 +44,8 @@ function Home() {
         const topicValues = await response.json();
         setsensorValue(topicValues);
 
-        // Verificar si hay una notificación y mostrar la ventana emergente si es el caso
-        if (topicValues && topicValues.notificaciones && topicValues.notificaciones.length > 0) {
-          const alertMessage = topicValues.notificaciones;
+        if (topicValues && topicValues['notificacion/aire']) {
+          const alertMessage = topicValues['notificacion/aire']; // Suponiendo que el mensaje de la notificación se encuentra en esta propiedad
           setAlertMessage(alertMessage);
           setPopupVisible(true);
           const response = await fetch('http://3.235.58.25:3000/clearNotificaciones');
