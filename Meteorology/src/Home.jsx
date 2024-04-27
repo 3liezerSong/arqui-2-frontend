@@ -20,7 +20,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/datos');
+        const response = await fetch('http://3.235.58.25:3000/datos');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -37,7 +37,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/topicValues');
+        const response = await fetch('http://3.235.58.25:3000/topicValues');
         if (!response.ok) {
           throw new Error('Failed to fetch sensor values');
         }
@@ -49,7 +49,7 @@ function Home() {
           const alertMessage = topicValues.notificaciones;
           setAlertMessage(alertMessage);
           setPopupVisible(true);
-          const response = await fetch('http://localhost:3000/clearNotificaciones');
+          const response = await fetch('http://3.235.58.25:3000/clearNotificaciones');
         }
 
       } catch (error) {
@@ -70,7 +70,7 @@ function Home() {
 
   const handleClick = async (topic, message) => {
     try {
-      const response = await axios.post('http://localhost:3000/publish', {
+      const response = await axios.post('http://3.235.58.25:3000/publish', {
           topic: topic,
           message: message
       }, {
@@ -85,17 +85,17 @@ function Home() {
 
   const handleVentiladorClick = () => {
     setVentiladorClicked(!ventiladorClicked);
-    handleClick('ventilador', ventiladorClicked ? 'off' : 'on');
+    handleClick('ventilador', ventiladorClicked ? '0' : '1');
   };
 
   const handlePuertaClick = () => {
     setPuertaClicked(!puertaClicked);
-    handleClick('puerta', puertaClicked ? 'closed' : 'open');
+    handleClick('puerta', puertaClicked ? '0' : '1');
   };
 
   const handleFocoClick = () => {
     setFocoClicked(!focoClicked);
-    handleClick('foco', focoClicked ? 'off' : 'on');
+    handleClick('foco', focoClicked ? '0' : '1');
   };
 
   return (
